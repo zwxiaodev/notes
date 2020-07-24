@@ -1,0 +1,7 @@
+线程学习笔记：
+1、synchronized：重量级锁，锁的是对象（堆内存中的内存区域，不是对象变量的引用）；同时保证原子性和可见性
+2、volatile：修饰的变量是用于线程间可见性（无锁同步），只能保证可见，但不保证原子性
+3、原子性：同步块里的代码不能被其他线程打断
+4、synchronized重入锁：synchronized同步块里再调用synchronized的方法，或则子类的synchronized方法调用父类的synchronized方法是可以的
+5、一个线程已经在执行一个对象的synchronized代码时，其他线程也能再调用该对象的非synchronized方法（只有synchronized方法才需要获取对象的锁，非synchronized方法不需要获取锁）
+6、效率高->低：Atomic*.java(原子类) > volatile > synchronized

@@ -15,4 +15,4 @@
 14、wait、notify/notifyall:都是锁对象调用的方法，因此必定是线程先锁定了该对象，才能执行该对象的这些方法调用；
 15、wait会释放对象锁，进入等待状态；其他方法不会释放锁；java中线程没有唤醒执行线程的方法，notify都是唤醒需要获取该锁对象的线程，参与竞争锁，cpu线程调度器来决定哪个线程执行；
 notifyall是唤醒所有等待状态的线程
-16、
+16、CountDownLatch：同步计数器，当计数器数值减为0时，所有受其影响而等待的线程将会被激活；代替wait/notify/notifyall来进行线程间的通信，还可以指定等待时间使用await、countdown方法代替wait/notify

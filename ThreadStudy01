@@ -24,3 +24,4 @@ CountDownLatch典型用法：2、实现多个线程开始执行任务的最大�
 21、CyclicBarrier(循环栅栏)：可以实现一组线程相互等待，当所有线程都到达某个屏障点后再进行后续的操作；内部都有一个计数器，当计数器的值不断的减为0的时候所有阻塞的线程将会被唤醒
 22、CyclicBarrier的计数器由自己控制，而CountDownLatch的计数器则由使用者来控制；CountDownLatch只能拦截一轮，而CyclicBarrier可以实现循环拦截；可以用于多线程计算数据，最后合并计算结果的场景。
 23、Semaphore：是synchronized 的加强版，作用是控制线程的并发数量。就这一点而言，单纯的synchronized 关键字是实现不了的。
+24、reentrantlock(手工锁)：用于替代synchronized，lock=new RenentrantLock（）；锁定：lock.lock();解锁：lock.unlock();异常后不会自动释放锁，需要手动释放锁！！！！！

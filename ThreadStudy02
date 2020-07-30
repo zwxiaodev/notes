@@ -1,0 +1,2 @@
+1、ThreadLocal:线程局部变量，可以使多线程copy的主存对象修改后不让其他线程看到，成为局部变量，相当于拷贝了一份在自己的线程里，互不影响。volatile是让变量可见；
+2、ThreadLocal：是使用空间换时间，synchronized：是使用时间换空间。

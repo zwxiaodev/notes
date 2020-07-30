@@ -19,7 +19,6 @@ HashTable和HashMap区别
 WeakHashMap类
 一、基本概念
 Java容器类类库的用途是“持有对象”，并将其划分为两个不同的概念：
-
 Collection：一个独立元素的序列，这些元素都服从一条或者多条规则。 List必须按照插入的顺序保存元素，而set不能有重复的元素。Queue按照排队规则来确定对象产生的顺序（通常与它们被插入的顺序相同）。
 Map：一组成对的“键值对”对象，允许你使用键来查找值。
 注：
@@ -58,7 +57,8 @@ CopyOnWriteArraySet：基于CopyOnWriteArrayList，不添加重复元素
 ArrayBlockingQueue：基于数组、先进先出、线程安全，可实现指定时间的阻塞读写，并且容量可以限制
 LinkedBlockingQueue：基于链表实现，读写各用一把锁，在高并发读写操作都多的情况下，性能优于ArrayBlockingQueue
 二、Collection集合接口
-Collection是最基本的集合接口，一个Collection代表一组Object，即Collection的元素（Elements）。一些Collection允许相同的元素而另一些不行。一些能排序而另一些不行。JavaSDK不提供直接继承自Collection的类，JavaSDK提供的类都是继承自Collection的“子接口”如List和Set。
+Collection是最基本的集合接口，一个Collection代表一组Object，即Collection的元素（Elements）。一些Collection允许相同的元素而另一些不行。一些能排序而另一些不行。
+JavaSDK不提供直接继承自Collection的类，JavaSDK提供的类都是继承自Collection的“子接口”如List和Set。
 
 主要方法:
 boolean add(Object o)添加对象到集合
@@ -78,21 +78,26 @@ List是有序的Collection，使用此接口能够精确的控制每个元素插
 　　 实现List接口的常用类有LinkedList，ArrayList，Vector和Stack。
 
 LinkedList类
-LinkedList实现了List接口，允许null元素。此外LinkedList提供额外的get，remove，insert方法在LinkedList的首部或尾部。这些操作使LinkedList可被用作堆栈（stack），队列（queue）或双向队列（deque）。
+LinkedList实现了List接口，允许null元素。此外LinkedList提供额外的get，remove，insert方法在LinkedList的首部或尾部。
+这些操作使LinkedList可被用作堆栈（stack），队列（queue）或双向队列（deque）。
 　　 注意:LinkedList是非同步的。如果多个线程同时访问一个List，则必须自己实现访问同步。一种解决方法是在创建List时构造一个同步的List：
 
 List list = Collections.synchronizedList(new LinkedList(…));
-1
+
 ArrayList类
-ArrayList实现了可变大小的数组。它允许所有元素，包括null。ArrayList没有同步。size，isEmpty，get，set方法运行时间为常数。但是add方法开销为分摊的常数，添加n个元素需要O(n)的时间。其他的方法运行时间为线性。每个ArrayList实例都有一个容量（Capacity），即用于存储元素的数组的大小。这个容量可随着不断添加新元素而自动增加，但是增长算法并没有定义。当需要插入大量元素时，在插入前可以调用ensureCapacity方法来增加ArrayList的容量以提高插入效率。
+ArrayList实现了可变大小的数组。它允许所有元素，包括null。ArrayList没有同步。size，isEmpty，get，set方法运行时间为常数。但是add方法开销为分摊的常数，添加n个元素需要O(n)的时间。
+其他的方法运行时间为线性。每个ArrayList实例都有一个容量（Capacity），即用于存储元素的数组的大小。这个容量可随着不断添加新元素而自动增加，但是增长算法并没有定义。
+当需要插入大量元素时，在插入前可以调用ensureCapacity方法来增加ArrayList的容量以提高插入效率。
 　　 和LinkedList一样，ArrayList也是非同步的（unsynchronized）。一般情况下使用这两个就可以了，因为非同步，所以效率比较高。
 　　 如果涉及到堆栈，队列等操作，应该考虑用List，对于需要快速插入，删除元素，应该使用LinkedList，如果需要快速随机访问元素，应该使用ArrayList。
 
 Vector类
-Vector非常类似ArrayList，但是Vector是同步的。由Vector创建的Iterator，虽然和ArrayList创建的Iterator是同一接口，但是，因为Vector是同步的，当一个Iterator被创建而且正在被使用，另一个线程改变了Vector的状态（例如，添加或删除了一些元素），这时调用Iterator的方法时将抛出ConcurrentModificationException，因此必须捕获该 异常。
+Vector非常类似ArrayList，但是Vector是同步的。由Vector创建的Iterator，虽然和ArrayList创建的Iterator是同一接口，但是，因为Vector是同步的，当一个Iterator被创建而且正在被使用，
+另一个线程改变了Vector的状态（例如，添加或删除了一些元素），这时调用Iterator的方法时将抛出ConcurrentModificationException，因此必须捕获该 异常。
 　　vector的使用主要有如下两种场景：
 （1）vector所谓的多线程安全，只是针对单纯地调用某个方法它是有同步机制的。如add，多个线程都在对同一个容器add元素，vector能够保证最后总数是正确的，而ArrayList没有同步机制，就无法保证。
-（2）vector的多线程安全，在组合操作时不是线程安全的。比如一个线程先调用vector的size方法得到有10个元素，再调用get(9)方法获取最后一个元素，而另一个线程调用remove(9)方法正好删除了这个元素，那第一个线程就会抛越界异常。
+（2）vector的多线程安全，在组合操作时不是线程安全的。比如一个线程先调用vector的size方法得到有10个元素，再调用get(9)方法获取最后一个元素，而另一个线程调用remove(9)方法正好删除了这个元素，
+那第一个线程就会抛越界异常。
 总结：
 （1）在需要对容器进行组合操作时，vector不适用（需要自己用synchronized将组合操作进行同步）；
 （2）仅在上述第一种场景时，才需要使用vector
@@ -125,8 +130,8 @@ public class TestMultiThread {
 			for (int i = 0; i < 1000; ++i) {
 				vec.add(i);
 				lst.add(i);
-			}	
-		}		
+			}
+		}
 	}
 	private static Vector vec = new Vector();
 	private static List lst = new ArrayList();
@@ -139,48 +144,7 @@ public class TestMultiThread {
 		    thread2.start();
 	} 
 }  
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
+
 如上程序运行结果：
 
 vec size is 2000

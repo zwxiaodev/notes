@@ -1,0 +1,48 @@
+ClassLoaderr定义：
+
+我们用eclipse或idea编写一个xxx.java文件，通过编译器编译成xxx.class文件，ClassLoader就是用来加载这些class文件到内存当中的。
+
+三个默认ClassLoader：
+一、BootStrap ClassLoader：启动类加载器，最顶层类加载器，负责加载JDK中的核心类库，如：rt.jar、resources.jar、charsets.jar等。
+二、Extension ClassLoader：扩展类加载器，负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext/目下的所有jar。
+三、App ClassLoader：系统类加载器，负责加载应用程序classpath目录下的所有jar。
+
+除了Java默认提供的三个ClassLoader之外，用户还可以根据需要定义自已的ClassLoader，而这些自定义的ClassLoader都必须继承自java.lang.ClassLoader类（Extension ClassLoader和App ClassLoader也继承ClassLoader类）、以及重写父类的findClass方法，但是Bootstrap ClassLoader不继承ClassLoader，因为它不是一个普通的Java类，底层由C++编写，已嵌入到了JVM内核当中，当JVM启动后，Bootstrap ClassLoader也随着启动，负责加载完核心类库后，并构造Extension ClassLoader和App ClassLoader类加载器。
+
+    ClassLoader加载机制
+
+ClassLoader使用的是双亲委派的加载机制，每个ClassLoader实例都有一个父类加载器的引用（不是继承的关系，是一个包含的关系），虚拟机内置的类加载器（Bootstrap ClassLoader）本身没有父类加载器，但可以用作其它ClassLoader实例的的父类加载器。当一个ClassLoader实例需要加载某个类时，先把这个任务委托给它的父类加载器，一层一层的往上抛（有点像抛异常，哈哈），首先由最顶层的类加载器Bootstrap ClassLoader试图加载，如果没加载到，则把任务转交给Extension ClassLoader试图加载，如果也没加载到，则转交给App ClassLoader 进行加载，如果它也没有加载得到的话，则返回给委托的发起者，由它到指定的文件系统或网络等URL中加载该类。如果它们都没有加载到这个类时，则抛出ClassNotFoundException异常。否则将这个找到的类生成一个类的定义，并将它加载到内存当中，最后返回这个类在内存中的Class实例对象。下图比较形象：
+
+    Java类加载的步骤
+
+装载：把二进制形式的Java类型读入Java虚拟机中。
+
+连接：把装载的二进制形式的类型数据合并到虚拟机的运行时状态中去。
+
+验证：确保Java类型数据格式正确并且适合于Java虚拟机使用。
+
+准备：负责为该类型分配它所需内存。
+
+解析：把常量池中的符号引用转换为直接引用。
+
+初始化：为类中的静态变量变量赋适当的初始值，执行静态代码块。
+
+ 
+
+面试题
+
+ 
+
+1、为什么要使用双亲委托模型？
+
+ 
+
+因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。从安全角度考虑，如果不使用这种委托模式，我们自己定义一个Map来动态替代java核心api中定义的类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为Map在启动时就被引导类加载器（Bootstrcp ClassLoader）加载，所以用户自定义的ClassLoader永远也无法加载一个自己写的Map，除非你改变JDK中ClassLoader搜索类的默认算法。
+
+ 
+
+2、JVM在搜索类的时候，又是如何判定两个class是相同的呢？
+
+ 
+
+JVM在判定两个class是否相同时，不仅要判断两个类名是否相同，而且要判断是否由同一个类加载器实例加载的。只有两者同时满足的情况下，JVM才认为这两个class是相同的。就算两个class是同一份class字节码，如果被两个不同的ClassLoader实例所加载，JVM也会认为它们是两个不同的class。

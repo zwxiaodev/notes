@@ -56,10 +56,10 @@
    //放入的对象，要等待一会儿才能被取走；对象必须实现Delay接口，每个对象可以设置延时时间，加入默认会排序，延时最长的在前面
    BlockingQueue<MyDelayObject> delayQueue = new DelayQueue<>();  //可用于定时任务
    
-   LinkedTransferQueue transQueue =  new LinkedTransferQueue<>(); //转移队列
-   transQueue.transfer("aaa");  //生产者放入队列前，先看有没有消费者，有则直接给消费者；没有则会阻塞；就是生产的东西必须马上消费，否则阻塞；在特别高的并发要求环境使用
+   LinkedTransferQueue<String> transQueue =  new LinkedTransferQueue<>(); //转移队列
+   transQueue.transfer("aaa");  //生产者放入队列前，先看有没有消费者，有则直接给消费者；没有则会阻塞；就是生产的东西必须马上消费，否则阻塞；在特别高的并发要求环境使用(实时消息处理-netty)
    
-   LinkedTransferQueue transQueue =  new LinkedTransferQueue<>(); //转移队列
-   
-   
+   BlockingQueue<String> syncQueue =  new SynchronousQueue<>(); //同步队列(特殊的transferQueue)，没有容量的队列，容量为0，来的消息必须马上处理，否则错误
+   syncQueue.put("aaa");  //直接报错 full queue，不能添加
+   syncQueue.put("aaa");  //阻塞，等待被消费（内部调用transfer）
 

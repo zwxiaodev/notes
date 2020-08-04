@@ -55,7 +55,7 @@
    loolean isAdd = arrayBlockQueues.offer("aaa"); //不报异常，aaa不会加入
    loolean isAdd = arrayBlockQueues.offer("aaa",1,TimeUnit.SECONDS);  //按给定的时间段阻塞，加不进去就不加了
    
-   //放入的对象，要等待一会儿才能被取走；对象必须实现Delay接口，每个对象可以设置延时时间，加入默认会排序，延时最长的在前面
+   //放入的对象，要等待一会儿才能被取走；对象必须实现Delay接口，每个对象可以设置延时时间，加入默认会排序，延时最短的会在前面，被最先取出来
    BlockingQueue<MyDelayObject> delayQueue = new DelayQueue<>();  //可用于定时任务
    
    LinkedTransferQueue<String> transQueue =  new LinkedTransferQueue<>(); //转移队列

@@ -52,4 +52,5 @@
    arrayBlockQueues.add("aaa"); //报异常，full queue队列满了
    loolean isAdd = arrayBlockQueues.offer("aaa"); //不报异常，aaa不会加入
    loolean isAdd = arrayBlockQueues.offer("aaa",1,TimeUnit.SECONDS);  //按给定的时间段阻塞，加不进去就不加了
-  
+   
+   BlockingQueue<MyDelayObject> delayQueue = new DelayQueue<>(); //放入的对象，要等待一会儿才能被取走；

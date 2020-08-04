@@ -3,6 +3,11 @@
   Runnable:run()没返回值
   Callble:call()有返回值V(返回)
 3、Executors：操作Executor、ExecutorService等的工具类
-6、java的线程池都实现了ExecutorSercice接口：
+6、java的线程池都实现了ExecutorSercice接口：线程用完了直接放回池子，不会消失
   ExecutorService fixedService = Executors.newFixedThreadPool(5);	      //线程池固定5个线程
   ExecutorService cacheService = Executors.newCachedThreadPool();
+  fixedService.execute();       //执行任务
+  fixedService.shutdown();      //关闭线程池,等待所有任务都执行完毕才会关闭
+  fixedService.shutdownNow();   //立即关闭线程池,不会等待所有任务都执行完毕才关闭
+  fixedService.isTerminated();  //是否池子里的任务都执行完毕了
+  fixedService.isShutdown();    //线程池是否关闭了，关闭了不代表任务执行完了，可能在关闭之中

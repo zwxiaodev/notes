@@ -26,6 +26,7 @@
   
 6、同步容器:List
   List<String> list =  new ArrayList<>(); //非同步，并发会出问题
+  List<String> list =  new LinkedList<>(); //非同步，并发会出问题
   List<String> list =  new Vector<>();  //同步，线程安全
   //写实复制容器copy on write：每次写都会复制一个原来的容器，新增一个对象在后面；多线程下读效率高（不加锁），写效率极低，适合写少读多的环境；比如监听一个事件队列，add新事件，读取解析事件
   List<String> list =  new CopyOnWriteArrayList<>();  

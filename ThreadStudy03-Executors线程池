@@ -14,7 +14,7 @@
   
 7、一个线程池有2个队列，1个：存储还未执行的任务队列，一个存储:已经完成的任务的队列
 8、线城池中的线程执行完了，线程就是空闲的状态，等待接收新任务->执行
-9、FutureTask:未来的任务，有一个返回值Future
+9、FutureTask:未来的任务，有一个返回值(定义时的泛型对象，比如：Integer)
   FutureTask<Integer> futureTask = new FutureTask<Integer>(Callable<Integer> callable); //返回值是一个Integer
   FutureTask<Integer> futureTask = new FutureTask<Integer>(Runnable runnable, Integer result);
   new Thread(futureTask).start();

@@ -1,0 +1,30 @@
+1、ThreadLocal:线程局部变量，可以使多线程copy的主存对象修改后不让其他线程看到，成为局部变量，相当于拷贝了一份在自己的线程里，互不影响。volatile是让变量可见；
+2、ThreadLocal：是使用空间换时间，synchronized：是使用时间换空间。
+  ThreadLocal<T>其实是与线程绑定的一个变量。ThreadLocal和Synchonized都用于解决多线程并发访问。但是ThreadLocal与synchronized有本质的区别。
+  Synchronized用于线程间的数据共享，而ThreadLocal则用于线程间的数据隔离。Synchronized是利用锁的机制，使变量或代码块在某一时该只能被一个线程访问。
+  而ThreadLocal为每一个线程都提供了变量的副本，使得每个线程在某一时间访问到的并不是同一个对象，这样就隔离了多个线程对数据的数据共享。而Synchronized却正好相反，
+  它用于在多个线程间通信时能够获得数据共享。
+3、在一般情况下，从接收请求到返回响应所经过的所有程序调用都同属于一个线程。这样用户就可以根据需要，将一些非线程安全的变量以ThreadLocal存放，在同一次请求响应的调用线程中，
+所有对象所访问的同一ThreadLocal变量都是当前线程所绑定的。
+
+4、vector：同步的list，Vector<String> v = new Vector<>(); //内部的方法都是synchronized
+  并发容器:队列 Queue<String> tickets = new ConcurrentLinkedQueue<String>();  //队列：单端队列，双端队列（两端都可以进和出）
+  boolean isNull = tickets.poll(); //从队列头拿出一个元素，poll本身是同步的，该方法不会有同步问题，拿出来就少了一个，不存在重复读到同一个数据（相当于将判断和对队列的删除何在一个原子操作，
+  CAS来实现，没有加锁，效率高）
+  
+5、同步容器:Map
+  //不加锁的，单线程使用
+  Map<String,String> map = new HashMap<String,String>();  //非同步，单线程中使用，效率高 ；Collections.synhronizdXXX->将非同步容器封装成每个方法加sychrionized的容器返回
+  Map<String,String> map = new LinkedHashMap<>(); //非同步，链表实现的map
+  Map<String,String> map = new TreeMap<>(); //默认加入的数据是做排序的，效率低
+  
+  //加锁的容器
+  Collections.synhronizdXXX
+  Map<String,String> map = new HashTable<>(); //方法都是同步的，多线程中使用，锁的是整个对象，效率低（基本不用了）；并发不高可以shiy0ong
+  Map<String,String> map = new ConcurrentHashMap<String,String>();  //同步，锁的是一部分数据，效率高
+  Map<String,String> map = new ConcurrentSkipListMap<>(); //也排序，效率高
+  
+6、同步容器:List
+  Arraylist
+  
+  

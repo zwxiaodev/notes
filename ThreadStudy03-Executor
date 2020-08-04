@@ -1,4 +1,0 @@
-Interface Executor：执行器
-execute(Runnable r) ,r.run();
-
-ExecutorService:执行器服务 extends Executor，submit(Runnable task) submit(Callble<T> task)

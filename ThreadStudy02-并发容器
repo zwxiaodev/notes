@@ -12,7 +12,7 @@
   boolean isNull = tickets.poll(); //从队列头拿出一个元素，poll本身是同步的，该方法不会有同步问题，拿出来就少了一个，不存在重复读到同一个数据（相当于将判断和对队列的删除何在一个原子操作，
   CAS来实现，没有加锁，效率高）
   
-5、同步容器:Map
+5、同步容器:Map/Set/List
   //不加锁的，单线程使用
   Map<String,String> map = new HashMap<String,String>();  //非同步，单线程中使用，效率高 ；Collections.synhronizdXXX->将非同步容器封装成每个方法加sychrionized的容器返回
   Map<String,String> map = new LinkedHashMap<>(); //非同步，链表实现的map
@@ -25,6 +25,13 @@
   Map<String,String> map = new ConcurrentSkipListMap<>(); //也排序，效率高
   
 6、同步容器:List
-  Arraylist
-  
+  List<String> list =  new ArrayList<>(); //非同步，并发会出问题
+  List<String> list =  new Vector<>();  //同步，线程安全
+  //写实复制容器copy on write：每次写都会复制一个原来的容器，新增一个对象在后面；多线程下读效率高（不加锁），写效率极低，适合写少读多的环境；比如监听一个事件队列，add新事件，读取解析事件
+  List<String> list =  new CopyOnWriteArrayList<>();  
+  CopyOnWrite特点：
+    一般用于读多写少的情况，用于提高读取数据的效率
+    注意的是，读数据并不能保证实时性，因为读取时，读取的是旧数组的数据
+    缺点是：占用内存（每添加一次就需要复制一个数据）和数据一致性问题（不能保证实时数据）
+  Arraylist；
   

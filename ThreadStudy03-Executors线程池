@@ -1,5 +1,5 @@
 1、执行器 ：Interface Executor -> execute(Runnable r) --> r.run();
-2、执行器服务：ExecutorService extends Executor，submit(Runnable task) submit(Callble<T> task)：服务等待任务，执行任务
+2、执行器服务：ExecutorService extends Executor，还增加了 submit(Runnable task) submit(Callble<T> task)：服务等待任务，执行任务
   Runnable:run()没返回值
   Callble:call()有返回值V(返回)->return Future（未来的执行结果）
 3、Executors：操作Executor、ExecutorService等的工具类

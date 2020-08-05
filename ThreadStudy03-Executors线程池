@@ -5,7 +5,6 @@
 3、Executors：操作Executor、ExecutorService等的工具类，callable和runnable都可以应用于Executors,而hread类只支持runnable
 6、java的线程池都实现了ExecutorSercice接口：线程用完了直接放回池子，不会消失
   ExecutorService fixedService = Executors.newFixedThreadPool(5);	      //线程池固定5个线程
-  ExecutorService cacheService = Executors.newCachedThreadPool();
   fixedService.execute();       //执行任务
   fixedService.shutdown();      //关闭线程池,等待所有任务都执行完毕才会关闭
   fixedService.shutdownNow();   //立即关闭线程池,不会等待所有任务都执行完毕才关闭
@@ -26,3 +25,10 @@
   FutureTask<Integer> futureTask = new FutureTask<Integer>(Runnable runnable, Integer result);
   new Thread(futureTask).start();
   Integer result = futureTask.get(); //这里一直阻塞，知道任务执行完成,返回FutureTask返回的泛型结果
+10、ExecutorService cacheService = Executors.newCachedThreadPool();  //带缓存的线程池，最开始没有线程，来一个任务就new一个线程，以后就存在了（用完后，默认有一个活动时间60s,超过就被清除）
+    ExecutorService singleService = Executors.newSingleThreadPoll(); //只有一个线程的线程池，作用：保证放进该线程池的任务是顺序执行的
+    ExecutorService scheduleService = Executors.newScheduledThreadPoll(4); //定时器线程池；执行定时任务，类比DelayQueue
+    scheduleService.scheduleAtFixedRate(()->{ //以固定的频率来执行任务
+      ……
+    },0,500,TimeUnit.MILLSECONDS);  //0：起始的延时时间，500：频率，最后一个是时间单位
+    

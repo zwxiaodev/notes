@@ -47,6 +47,10 @@
     任务的处理逻辑包括任务的切分都集中在compute()方法里面。
     
 13、除了ForkJoinPool，其他线程池背后都是调用ThreadPollExecutor，可以自己创建自定义线城池;一共六种线程池
-14、List.paralleStream().forEach();  //TODO:了解一下Java8 新增的特性，
-Stream 是在 Java8 新增的特性，普遍称其为流；它不是数据结构也不存放任何数据，其主要用于集合的逻辑处理。
+14、List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9); 
+    numbers.stream().forEach(num->System.out.println(num)); //TODO:了解一下Java8 新增的特性，
+    Stream 是在 Java8 新增的特性，普遍称其为流；它不是数据结构也不存放任何数据，其主要用于集合的逻辑处理。
+    parallelStream提供了流的并行处理，它是Stream的另一重要特性，其底层使用Fork/Join框架实现。简单理解就是多线程异步任务的一种实现。
+    串行流：适合存在线程安全问题、阻塞任务、重量级任务，以及需要使用同一事务的逻辑。
+    并行流：适合没有线程安全问题、较单纯的数据处理任务。
 

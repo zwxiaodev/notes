@@ -1,9 +1,8 @@
 1、执行器 ：Interface Executor -> execute(Runnable r) --> r.run();
-2、执行器服务：ExecutorService extends Executor，还增加了 submit(Runnable task) submit(Callble<T> task)：服务等待任务，执行任务
-  Runnable:run()没返回值
-  Callble:call()有返回值V(返回)->return Future（未来的执行结果）
-  callable和runnable都可以应用于executors。而hread类只支持runnable
-3、Executors：操作Executor、ExecutorService等的工具类
+2、执行器服务：Interface ExecutorService extends Executor，还增加了 submit(Runnable task) submit(Callble<T> task)：服务等待任务，执行任务
+  Runnable:run()没返回值，不能抛出异常
+  Callble:call()有返回值V(返回)->return Future（未来的执行结果），可以抛出异常
+3、Executors：操作Executor、ExecutorService等的工具类，callable和runnable都可以应用于Executors,而hread类只支持runnable
 6、java的线程池都实现了ExecutorSercice接口：线程用完了直接放回池子，不会消失
   ExecutorService fixedService = Executors.newFixedThreadPool(5);	      //线程池固定5个线程
   ExecutorService cacheService = Executors.newCachedThreadPool();
@@ -13,7 +12,14 @@
   fixedService.isTerminated();  //是否池子里的任务都执行完毕了
   fixedService.isShutdown();    //线程池是否关闭了，关闭了不代表任务执行完了，可能在关闭之中
   
-7、一个线程池有2个队列，1个：存储还未执行的任务队列，一个存储:已经完成的任务的队列
+  Future<Integer> future = fixedService.submit(()->{ //相当于 new Callable(){Integer call()}
+    ……
+    rerun 1；
+  });
+  future.get();     //阻塞，直到任务执行完返回
+  future.isDone();  //是否执行完
+  
+7、一个线程池维护着2个队列，1个：存储还未执行的任务队列，一个存储:已经完成的任务的队列
 8、线城池中的线程执行完了，线程就是空闲的状态，等待接收新任务->执行
 9、FutureTask:未来的任务，有一个返回值(定义时的泛型对象，比如：Integer)
   FutureTask<Integer> futureTask = new FutureTask<Integer>(Callable<Integer> callable); //返回值是一个Integer

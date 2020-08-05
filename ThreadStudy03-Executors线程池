@@ -2,6 +2,7 @@
 2、执行器服务：ExecutorService extends Executor，还增加了 submit(Runnable task) submit(Callble<T> task)：服务等待任务，执行任务
   Runnable:run()没返回值
   Callble:call()有返回值V(返回)->return Future（未来的执行结果）
+  callable和runnable都可以应用于executors。而hread类只支持runnable
 3、Executors：操作Executor、ExecutorService等的工具类
 6、java的线程池都实现了ExecutorSercice接口：线程用完了直接放回池子，不会消失
   ExecutorService fixedService = Executors.newFixedThreadPool(5);	      //线程池固定5个线程

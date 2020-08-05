@@ -47,5 +47,6 @@
     任务的处理逻辑包括任务的切分都集中在compute()方法里面。
     
 13、除了ForkJoinPool，其他线程池背后都是调用ThreadPollExecutor，可以自己创建自定义线城池;一共六种线程池
-14、List.paralleStream().forEach();  //TODO:了解一下新语法
+14、List.paralleStream().forEach();  //TODO:了解一下Java8 新增的特性，
+Stream 是在 Java8 新增的特性，普遍称其为流；它不是数据结构也不存放任何数据，其主要用于集合的逻辑处理。
 

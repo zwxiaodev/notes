@@ -31,4 +31,19 @@
     scheduleService.scheduleAtFixedRate(()->{ //以固定的频率来执行任务
       ……
     },0,500,TimeUnit.MILLSECONDS);  //0：起始的延时时间，500：频率，最后一个是时间单位
+11、ExecutorService workService = Executors.newWorkStealingPoll(); //内部使用ForkJoinPoll实现
+    偷工作线程池：相当于池子里的每个线程都有一些要执行的任务，一个线程执行完所有任务，它就去偷其他线程还未执行的任务来执行；
+    该线程池的线程是精灵线程（守护线程、后台线程）Daemon
+    默认认根据计算机有几核则启动几个线程来执行任务；Runtime.getRuntime(). availableProcessors();
+12、ForkJoinFoll forkJoinPoll = new ForkJoinPoll();  //分叉合并线程池：把大任务切成小任务(还可以再分->再分)大数据计算，最后合并每个任务的结果（分而治之）；也是Daemon线程
+    ForkJoinTask fjTask = new ForkJoinTask(); //fork/join通过fork将大任务拆分成小任务，在将小任务的结果join汇总
+    
+    ForkJoinPool：充当fork/join框架里面的管理者，最原始的任务都要交给它才能处理。它负责控制整个fork/join有多少个workerThread，workerThread的创建，激活都是由它来掌控。
+    它还负责workQueue队列的创建和分配，每当创建一个workerThread，它负责分配相应的workQueue。然后它把接到的活都交给workerThread去处理，它可以说是整个frok/join的容器。
+    ForkJoinWorkerThread：fork/join里面真正干活的"工人"，本质是一个线程。里面有一个ForkJoinPool.WorkQueue的队列存放着它要干的活，接活之前它要向ForkJoinPool注册(registerWorker)，
+    拿到相应的workQueue。然后就从workQueue里面拿任务出来处理。它是依附于ForkJoinPool而存活，如果ForkJoinPool的销毁了,它也会跟着结束。
+    ForkJoinPool.WorkQueue: 双端队列就是它，它负责存储接收的任务。
+    ForkJoinTask：代表fork/join里面任务类型，我们一般用它的两个子类RecursiveTask、RecursiveAction。这两个区别在于RecursiveTask任务是有返回值，RecursiveAction没有返回值。
+    任务的处理逻辑包括任务的切分都集中在compute()方法里面。
+    
     

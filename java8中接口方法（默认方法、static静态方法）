@@ -1,0 +1,117 @@
+1、概述
+以前，接口里的方法要求全部是抽象方法，java8以后允许在接口里定义默认方法和类方法。不同的是：
+默认方法可以通过实现接口的类实例化的对象来调用,而类方法就相对于工具方法了。需要注意的是，此处的静态方法只能被public修饰（或者省略不写），不能是private或者protected
+
+java8可以说是jdk版本的一次重大升级，给我们也带来了非常多的新特性，而本文就针对于java8中很重要的新特性之一：接口方法。来讨论一下平时使用中可能遇到的问题
+
+2、栗子
+大家都知道，在jdk8之后，接口里面咱们都可以写具体的方法了，但这方法比较特殊，只能是静态方法或者默认方法。这又让我们有更好的设计，可以设计出更加高内聚的代码，更加方便的管理封装。
+
+public interface MyInter {
+    default void df(){    //声明一个接口的默认方法
+ 
+        System.out.println("i'am default f");
+        sf();        //调用本接口的类方法
+    }
+    static void sf(){    //声明一个接口的类方法
+ 
+        System.out.println("i'am static f");
+    }
+}
+如上，本接口的默认方法还可以直接调用本类的静态方法。
+
+默认方法的主要优势是提供一种拓展接口的方法，而不破坏现有代码。加入我们有一个已经投入使用接口需要拓展一个新的方法，在JDK8以前，如果为一个使用的接口增加一个新方法，
+则我们必须在所有实现类中添加该方法的实现，否则编译会出现异常。如果实现类数量少并且我们有权限修改，可能会工作量相对较少。如果实现类比较多或者我们没有权限修改实现类源代码，
+这样可能就比较麻烦。而默认方法则解决了这个问题，它提供了一个实现，当没有显示提供其他实现时就采用这个实现。这样新添加的方法将不会破坏现有代码。
+默认方法的另一个优势是该方法是可选的，子类可以根据不同的需求Override默认实现
+
+咱们先定义两个接口，下面要使用的：
+
+interface DemoInterface {
+    default void doSomething() {
+        System.out.println("默认方法-->demo");
+    }
+}
+ 
+interface Demo1Interface {
+    default void doSomething() {
+        System.out.println("默认方法-->demo1");
+    }
+}
+然后定义一个实现类
+
+class AA implements DemoInterface {
+ 
+    public static void main(String[] args) {
+        AA aa = new AA();
+        aa.doSomething(); //默认方法-->demo
+    }
+}
+输出默认方法的输出，但如果AA实现了两个接口，并且这两个接口里有有同名默认方法呢？
+这里写图片描述
+我们会发现，编译报错了，强制要求我们必须实现这个方法。
+
+class AA implements DemoInterface, Demo1Interface {
+ 
+    @Override
+    public void doSomething() {
+        Demo1Interface.super.doSomething();
+    }
+ 
+    public static void main(String[] args) {
+        AA aa = new AA();
+        aa.doSomething(); //默认方法-->demo1
+    }
+}
+再一个情况,接口之间存在继承关系，然后存在同名情况
+
+interface DemoInterface {
+    default void doSomething() {
+        System.out.println("默认方法-->demo");
+    }
+}
+ 
+interface Demo1Interface extends DemoInterface {
+ 
+    default void doSomething() {
+        System.out.println("默认方法-->demo1");
+    }
+}
+ 
+class AA implements Demo1Interface {
+ 
+    public static void main(String[] args) {
+        AA aa = new AA();
+        aa.doSomething(); //默认方法-->demo1
+    }
+}
+我们发现，有点类似于Maven的原则：采取就近原则
+
+综上，咱们经过实验得出如下结论：
+
+当继承的父类和实现的接口中有相同签名的方法时，优先使用父类的方法。
+当接口的父接口中也有同样的默认方法时，就近原则调用子接口的方法。
+当实现的多个接口中有相同签名的方法时，必须在实现类中通过重写方法解决冲突问题，否者无法通过编译，在重写的方法中可以通过 接口名.super.方法名(); 的方式显示调用需要的方法。
+如果一个类既extend了父类，又实现了接口。如果出现同名方法，那就遵循类优先原则。
+
+3、使用场景
+接口是设计模式中一种开闭原则的体验，而java8赋予了接口新的特性，使得接口使用起来更加的得心应手了，这也有助于我们更加内聚自己的代码结构了。比如collection即可类和接口，排序接口，
+把很多工具方法都放到接口里了。
+
+4、最后
+多多使用新的特性，就能多多提高生产效率（编码效率）。另外，我可以引出一个提问：为什么java的接口里的属性必须是static的？并且要求必须是final的呢？这个留给大家自己做思考。。。算了，
+顺便奉上吧：
+
+接口中的数据对所有实现类只有一份,所以是static
+要使实现类为了向上转型成功,所以必须是final的（接口不能被实例化，所以接口里面如果是变量的话不会被赋初始值这样就会出问题，所以必须是final的。其实还是为了安全考虑的） 这样接口也能起到
+一定的模版的作用。
+
+ 简介
+   我们通常所说的接口的作用是用于定义一套标准、约束、规范等，接口中的方法只声明方法的签名，不提供相应的方法体，方法体由对应的实现类去实现。
+
+在JDK1.8中打破了这样的认识，接口中的方法可以有方法体，但需要关键字static或者default来修饰，使用static来修饰的称之为静态方法，静态方法通过接口名来调用，使用default来修饰的称之为默认方法，
+默认方法通过实例对象来调用。 
+
+静态方法和默认方法的作用：
+   静态方法和默认方法都有自己的方法体，用于提供一套默认的实现，这样子类对于该方法就不需要强制来实现，可以选择使用默认的实现，也可以重写自己的实现。当为接口扩展方法时，
+   只需要提供该方法的默认实现即可，至于对应的实现类可以重写也可以使用默认的实现，这样所有的实现类不会报语法错误：Xxx不是抽象的, 并且未覆盖Yxx中的抽象方法。

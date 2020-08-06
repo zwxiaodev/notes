@@ -21,7 +21,6 @@
     5、形参列表的数据类型会自动推断； 
     6、lambda不会生成一个单独的内部类文件； 
     7、lambda表达式若访问了局部变量，则局部变量必须是final的，若是局部变量没有加final关键字，系统会自动添加，此后在修改该局部变量，会报错；
-    
     //lambda表达式--实现方式1：
     DefalutTest dt2 =(a,b)->{
         return a-b;
@@ -32,11 +31,19 @@
     
     //无参方法，并且执行语句只有1条：
     LambdaTest lt = ()-> System.out.println("测试无参");
-    
     //只有一个参数方法：
     LambdaTest2 lt1 = s-> System.out.println(s);
   
   Lambda表达式其他特性：
     1、引用实例方法： 
-    语法：<函数式接口>  <变量名> = <实例>::<实例方法名>
-    调用：<变量名>.接口方法([实际参数...])
+      语法：<函数式接口>  <变量名> = <实例>::<实例方法名>
+      调用：<变量名>.接口方法([实际参数...])
+      LambdaTest2 lt1 = s-> System.out.println(s);
+      lt1.print("有一个参数");
+      //改写为：
+      LambdaTest2 lt2 = System.out::println;
+      lt2.print("实例引用方式调用");
+    2、引用类方法： 
+      语法：<函数式接口>  <变量名> = <类>::<类方法名称>
+      调用：<变量名>.接口方法([实际参数...])
+      LambdaTest3 lt3 = Collections::sort;

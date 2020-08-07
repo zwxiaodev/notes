@@ -1,6 +1,8 @@
 Java8新特性：Stream流详解：https://blog.csdn.net/weixin_38294999/article/details/89277697
+https://www.cnblogs.com/wuhenzhidu/p/10740091.html
 
-1、Stream是元素的集合，这点让Stream看起来用些类似Iterator；可以支持顺序和并行的对原Stream进行汇聚的操作；可以把Stream当成一个高级版本的Iterator
+1、Stream是元素的集合，这点让Stream看起来用些类似Iterator；可以支持顺序和并行的对原Stream进行汇聚的操作；可以把Stream当成一个高级版本的Iterator；
+   使用并行去遍历时，数据会被分成多个段，其中每一个都在不同的线程中处理，然后将结果一起输出
 2、使用Stream的基本步骤：
    1、创建Stream；
    2、转换Stream，每次转换原有Stream对象不改变，返回一个新的Stream对象（**可以有多次转换**）；
@@ -25,3 +27,15 @@ Java8新特性：Stream流详解：https://blog.csdn.net/weixin_38294999/article
 
 5、Stream API 借助于同样新出现的 Lambda 表达式，极大的提高编程效率和程序可读性。同时它提供串行和并行两种模式进行汇聚操作，并发模式能够充分利用多核处理器的优势，
 使用 fork/join 并行方式来拆分任务和加速处理过程。通常编写并行代码很难而且容易出错, 但使用 Stream API 无需编写一行多线程的代码，就可以很方便地写出高性能的并发程序。
+
+6、构造流的几种常见方法:
+   // 1. Individual values
+   Stream stream = Stream.of("a", "b", "c");
+   // 2. Arrays
+   String [] strArray = new String[] {"a", "b", "c"};
+   stream = Stream.of(strArray);
+   stream = Arrays.stream(strArray);
+   // 3. Collections
+   List<String> list = Arrays.asList(strArray);
+   stream = list.stream();
+7、对于基本数值型，目前有三种对应的包装类型 Stream：IntStream、LongStream、DoubleStream

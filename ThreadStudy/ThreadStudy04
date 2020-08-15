@@ -5,3 +5,7 @@
 执行时间长，线程数多，用系统锁
 3、synchronized:能保证原子性，但是无法保证指令重排序，volatile：保证可见性和禁止重排序（内存屏蔽）
 4.cas：cpu原语支持的，不能被打断的；java很多底层都是用的cas实现
+5、CountdownLatch，CyclicBarrier：都是能让程序执行到某一点后再一起继续执行的功能，join也能做到这个功能
+  CountdownLatch：倒数计数的门栓，只能使用一次，await()：这里会阻塞等待，知道count变为0则继续执行
+  CyclicBarrier:循环栅栏，await()就好比是屏障，经过指定数量的屏障才可以执行最后的线程。或者说是一直等待，直到await()的数量是指定的数量后才会执行下面的；
+  await()方法在等待所有的线程都通过了屏障，就会执行CyclicBarrier内部的线程，执行完内部线程后，子线程会继续执行。

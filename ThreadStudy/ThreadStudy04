@@ -28,3 +28,5 @@
 8、Semaphore：信号量，拿到信号才能执行，acquire（）；释放信号，release（）；new Semaphore(2); //限流（车道收费站），控制职能有几个线程能执行
 9、Exchanger<String> exchange = new Exchanger<>(); //交换器，交换数据，可以将一个线程的数据交换给另一个线程（自能是两个线程交换）
   exchange(值)//阻塞等待都交换了才继续执行（游戏中两个人交换装备，金币）
+Exchanger类源于java.util.concurrent包，它可以在两个线程之间传输数据，Exchanger中的public V exchange(V x)方法被调用后等待另一个线程到达交换点（如果当前线程没有被中断），
+然后将已知的对象传给它，返回接收的对象。

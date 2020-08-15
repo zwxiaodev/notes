@@ -12,3 +12,12 @@
   可以看到是分两步的： 
   第一步：所有的线程都会阻塞，然后执行CyclicBarrier内部线程； 
   第二部：CyclicBarrier内部线程执行完后，各子线程又开始继续运行。
+  CyclicBarrier常用于多线程分组计算；
+  CyclicBarrier(parties)：await()
+
+  在CyclicBarrier上进行阻塞等待，直到发生以下情形之一：
+    在CyclicBarrier上等待的线程数量达到parties，则所有线程被释放，继续执行。
+    当前线程被中断，则抛出InterruptedException异常，并停止等待，继续执行。
+    其他等待的线程被中断，则当前线程抛出BrokenBarrierException异常，并停止等待，继续执行。
+    其他等待的线程超时，则当前线程抛出BrokenBarrierException异常，并停止等待，继续执行。
+    其他线程调用CyclicBarrier.reset()方法，则当前线程抛出BrokenBarrierException异常，并停止等待，继续执行。

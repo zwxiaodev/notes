@@ -25,3 +25,6 @@
 7、ReadWriteLock lock = new RenentrantReadWriteLock（）； //读写锁，提高效率
   Lock readLock = lock.readLock();  //共享锁
   Lock writeLock = lock.wirteLock();  //排它锁
+8、Semaphore：信号量，拿到信号才能执行，acquire（）；释放信号，release（）；new Semaphore(2); //限流（车道收费站），控制职能有几个线程能执行
+9、Exchanger<String> exchange = new Exchanger<>(); //交换器，交换数据，可以将一个线程的数据交换给另一个线程（自能是两个线程交换）
+  exchange(值)//阻塞等待都交换了才继续执行

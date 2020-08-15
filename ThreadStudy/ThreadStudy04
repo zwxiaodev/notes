@@ -22,3 +22,4 @@
     其他等待的线程超时，则当前线程抛出BrokenBarrierException异常，并停止等待，继续执行。
     其他线程调用CyclicBarrier.reset()方法，则当前线程抛出BrokenBarrierException异常，并停止等待，继续执行。
 6、Phaser：分阶段执行，可以理解为CyclicBarrier的升级版：我们可以协调多个执行阶段，为每个程序阶段重用Phaser实例。每个阶段可以有不同数量的线程等待前进到另一个阶段
+7、ReadWriteLock lock = new RenentrantReadWriteLock（）； //读写锁，写加锁，读不加锁，提高效率

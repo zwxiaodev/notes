@@ -2,4 +2,10 @@
 需要本地安装git.exe,然后在idea-setting-Git设置本地安装的git.exe目录
 还可以设置全局的Github账号
 
-2、idea先新建project，然后在里面新建module
+2、idea先新建project，然后在里面新建module（工程）
+3、将工程加入git管理:vcs-import version Control-create Git repository……选择工作空间project目录，则里面所有工程就被git管理跟踪了
+4、Git-add to ignore：添加忽略文件，不提交到git；或则在.git里找到exclue的文件添加忽略文件
+5、新添加的文件没有被git管理，则要先加入暂存区：git Add，提交到本地仓库：git-commit Directory……
+查看历史版本：git-show history，
+右键历史版本-Copy revision number（表示提交版本的唯一标识），工程上右键-git -repository-reset head……
+reset type 选Hard，to commit写刚才复制的number-reset即可回退到指定版本，回退后就不能回到最新版本；这时只有使用命令才可以回到最新版本

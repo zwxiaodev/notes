@@ -1,0 +1,5 @@
+1、idea+git开发代码：
+需要本地安装git.exe,然后在idea-setting-Git设置本地安装的git.exe目录
+还可以设置全局的Github账号
+
+2、idea先新建project，然后在里面新建module

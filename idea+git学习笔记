@@ -9,3 +9,15 @@
 查看历史版本：git-show history，
 右键历史版本-Copy revision number（表示提交版本的唯一标识），工程上右键-git -repository-reset head……
 reset type 选Hard，to commit写刚才复制的number-reset即可回退到指定版本，回退后就不能回到最新版本；这时只有使用命令才可以回到最新版本
+6、创建本地分支：git-repository-branches……-new branch
+切换分支：git-repository-branches……找到要切换的分支-checkout
+分支合并到master：git-repository-merge changes……选择要合并到master的分支-merge
+7、解决冲突：it-repository-merge changes……选择要合并到master的分支-merge-显示conflicts-merge……，合并到文件，自己解决冲突后再commit
+8、上传本地工程代码到gitlab：
+gitlab上新建一个仓库，复制***.git的地址，到ieda：工程右键-git-repository-push……-degine remote填入复制的地址
+9、更新远程代码：
+git-repository-push：有冲突则会弹出信息，
+git-repository-pull……
+10.idea中克隆github的项目：复制github上的项目地址-vcs-git-clone……填入地址-clone
+11、idea新建project-setting-设置jdk版本->导入moudle
+12.国内的项目托管网站-码云：https://gitee.com,也可一键导入github项目到码云

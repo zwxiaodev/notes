@@ -1,0 +1,30 @@
+1.引用的基本概念：强>软>弱>虚
+强引用：当我们使用new创建对象时，被创建的对象就是强引用，如Object object = new Object()，其中的object就是一个强引用了。如果一个对象具有强引用，JVM就不会去GC它，JVM宁可会报OOM来终止程序，也不回收该对象。
+
+软引用: 如果一个对象只具备软引用，如果内存空间足够，那么JVM就不会GC它，如果内存空间不足了，就会GC该对象。
+
+弱引用: 如果一个对象只具有弱引用，只要JVM的GC线程检测到了，就会立即回收。弱引用的生命周期要比软引用短很多。不过，如果垃圾回收器是一个优先级很低的线程，也不一定会很快就会释放掉软引用的内存。
+
+虚引用：如果一个对象只具有虚引用，那么它就和没有任何引用一样，随时会被JVM当作垃圾进行GC。
+
+上面的四种引用对应的是new关键字以及java.lang.ref包中的SoftReference，WeakReference, PhantomReference。我们注意到在java.lang.ref包中，还存在一个类叫做ReferenceQueue。
+
+2.理解ReferenceQueue
+当软引用对象被GC之后，虽然这个SoftReference对象指向的对象已不存在,但这个SoftReference对象本身还占用内存，因此需要一个适当的清除机制，避免大量SoftReference对象带来的OOM。这就需要用到ReferenceQueue。如果在创建SoftReference对象的时候，使用了一个ReferenceQueue对象作为参数提供给SoftReference的构造方法，如下例子:
+
+ReferenceQueue queue = new ReferenceQueue();
+SoftReference ref=new SoftReference(new MyObject(), queue);
+
+
+那么当这个SoftReference指向的MyOhject对象被垃圾收集器回收的同时，ref对象本身会被放入ReferenceQueue。也就是说，ReferenceQueue中保存的对象是Reference对象，但这些Reference对象引用的对象已经不存在了。
+
+我们可以调用ReferenceQueue的poll()方法来检查是否有它所关心的非强引用对象被回收。利用这个方法，我们可以检查哪个SoftReference所软引用的对象已经被回收。于是我们可以把这些失去软引用的对象的清除掉。
+
+3.理解WeakHashMap
+WeakHashMap是以弱引用为键实现的HsahMap。更精确地说，对于一个给定的key对象，其对应的value对象的存在并不能阻止该key对象被GC。GC某个key对象时，它所在的条目会一并被从Map中删除。这是WeakHashMap与其他HashMap最大的不同。
+
+总结：
+软引用和弱引用都能够实现缓存和避免内存泄露和溢出的问题，不同的是前者的生命周期比较长，后者的生命周期比较短，前者是在内存使用情况到了一定的阀值才会被GC回收，而后者只要被GC线程检测到就会被回收，各有优劣，如果比较注重性能的话可以选择后者，具体情况具体分析！
+
+内存泄漏memory leak ：是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 
+内存溢出 out of memory ：没内存可以分配给新的对象了

@@ -1,0 +1,43 @@
+项目遇到的问题：
+1、OA很多功能都正常访问，就流程事件页面选择dee任务界面出不来，谷歌浏览器看到有错误：Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING
+
+现象：请求status是200，但是浏览器Failed to load resource
+
+排查：以为是防火墙拦截了特殊的url，但是不是，客户使用了ngnix做了代理导致
+
+解决办法：https://blog.csdn.net/chenthe1/article/details/81475796
+
+使用Nginx代理的服务，一直使用正常，突然昨天就访问不了了；通过IP访问和端口能正常访问。
+
+以上问题原因：
+当代理文件大小超过配置的proxy_temp_file_write_size值时，nginx会将文件写入到临时目录下（默认为/proxy_temp）。
+
+如果nginx中/proxy_temp过大或者没有权限，就写不进去。
+
+解决一：
+直接删除Nginx缓存文件，应该就可以访问了：# rm -rf  /usr/local/nginx/proxy_temp
+
+防止缓存文件过多，设置Nginx的缓存过期时间，如下：# vim /usr/local/nginx/conf/nginx.conf
+
+server
+{
+listen 80;
+server_name mjj.jybb.me; #主机名
+location / {
+proxy_cache cache_one;
+proxy_cache_valid 200 304 3d; #正常状态缓存时间3天，按实际情况修改
+proxy_cache_key $host$uri$is_args$args;
+proxy_pass http://www.baidu.com/; #反代的网站
+proxy_redirect off;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+expires 10d; #默认10天缓存
+access_log /home/wwwlogs/mjj.log access; #日志文件，不开启日志请改为access_log off;
+}
+}
+重启一下nginx，访问一下网站
+
+解决二：
+调整/proxy_temp权限为配置nginx的那个用户。
+
+chown -R www:www /usr/local/nginx/proxy_temp

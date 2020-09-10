@@ -21,3 +21,17 @@ git-repository-pull……
 10.idea中克隆github的项目：复制github上的项目地址-vcs-git-clone……填入地址-clone
 11、idea新建project-setting-设置jdk版本->导入moudle
 12.国内的项目托管网站-码云：https://gitee.com,也可一键导入github项目到码云
+
+目前代码库已经切换到GitLab上，经过几天运行，发现git commit的人员信息与gitlab上配置的用户信息不相符。
+原因：本地git配置的user.name和user.email不对
+解决办法：需要在本地环境对git进行配置：
+修改全局用户名和邮箱地址
+        git config --global user.name "username"
+        git config --global user.email "email"
+查看git用户名和邮箱地址
+        git config user.name
+        git config user.email
+中文乱码解决
+        git config --global gui.encoding utf-8
+        注：如果使用IDE、sourceTree等工具进行的commit，请自行配置
+后续改进：对commit信息进行校验，不符合要求的commit不允许提交，直接报错

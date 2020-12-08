@@ -37,7 +37,7 @@ ClassLoader使用的是双亲委派的加载机制，每个ClassLoader实例都�
 
  
 
-因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。从安全角度考虑，如果不使用这种委托模式，我们自己定义一个Map来动态替代java核心api中定义的类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为Map在启动时就被引导类加载器（Bootstrcp ClassLoader）加载，所以用户自定义的ClassLoader永远也无法加载一个自己写的Map，除非你改变JDK中ClassLoader搜索类的默认算法。
+因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。从安全角度考虑，如果不使用这种委托模式，我们自己定义一个Map来动态替代java核心api中定义的类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为Map在启动时就被引导类加载器（Bootstrcp ClassLoader加载，所以用户自定义的ClassLoader永远也无法加载一个自己写的Map，除非你改变JDK中ClassLoader搜索类的默认算法。
 
  
 

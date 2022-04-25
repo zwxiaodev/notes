@@ -1,4 +1,4 @@
-ClassLoaderr定义：
+ClassLoader定义：
 
 我们用eclipse或idea编写一个xxx.java文件，通过编译器编译成xxx.class文件，ClassLoader就是用来加载这些class文件到内存当中的。
 

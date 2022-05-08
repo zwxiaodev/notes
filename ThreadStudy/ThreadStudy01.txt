@@ -1,32 +1,40 @@
 线程学习笔记：
 1、synchronized：重量级锁，锁的是对象（堆内存中的内存区域，不是对象变量的引用，信息存在锁对象的堆内存里），要避免代码中改变锁对象失效；同时保证原子性和可见性
-2、volatile：修饰的变量是用于线程间可见性（无锁同步），只能保证可见，但不保证原子性（数据一致性）,无法替代synchronized；volatile修饰的对象/变量改变值后，会立即将线程缓存的数立即会写到主内存，
-同时会通知其他cpu的使用这个变量的线程立即去更新线程的缓存值，保持数据一致；修饰对象时，线程中缓存的其实是对象的属性变量，而不是这个对象
+2、volatile：修饰的变量是用于线程间可见性（无锁同步），只能保证可见，但不保证原子性（数据一致性）,无法替代synchronized；
+volatile修饰的对象/变量改变值后，会立即将线程缓存的数立即会写到主内存，同时会通知其他cpu的使用这个变量的线程立即去更新线程的缓存值，保持数据一致；
+修饰对象时，线程中缓存的其实是对象的属性变量，而不是这个对象；被volatile关键字修饰的对象作为类变量或实例变量时，其对象中携带的类变量和实例变量也相当于被volatile关键字修饰了
 3、原子性：同步块里的代码不能被其他线程打断
 4、synchronized：synchronized同步块里再调用同一个对象的synchronized方法，或则子类的synchronized方法调用父类的synchronized方法是可以的
 5、一个线程已经在执行一个对象的synchronized代码时，其他线程也能再调用该对象的非synchronized方法（只有synchronized方法才需要获取对象的锁，非synchronized方法不需要获取锁）
 6、效率高->低：Atomic*.java(原子类) > volatile > synchronized；尽量细的锁定代码块
 7、原子类的方法都是原子性的，但是调用多个原子方法之间，并不是原子操作，也有可能被打断；原子方法使用很底层的方法来实现，效率高
 8、JMM:A、B线程都要用到同一个变量，java默认是A线程中会保留一份copy，这样如果线程B修改了变量值，则A线程是未必知道；从主内存中拷贝变量到线程私有的内存，不会总是去同步主内存到私有内存
-9、synchronized代码里跑出异常，java默认是会释放锁的；不想释放锁则需要try catch处理，否则其他线程可能获取到锁，执行已经错误的数据
+9、synchronized代码里抛出异常，java默认是会释放锁的；不想释放锁则需要try catch处理，否则其他线程可能获取到锁，执行已经错误的数据
 10、并行：多个线程同时在多核cpu同时执行；并发：同一个cpu里多个线程，根据时间片轮循线程来实现；切换线程上下文，切换时要保存当前线程的上下文信息（程序计数器等）
 11、不要以字符串常量作为锁定对象，其实是锁的同一个对象；jetty出现一个很隐蔽的bug就是因为锁定了同一个字符串
 12、lambda表达式（蓝不大）：java8开始引入的，适用场景：1、接口或父类 2、接口或父类只有一个方法；比如：线程的匿名类，其实就是简写代码而已
-13、当多线程不涉及同步，只是涉及线程通信的时候，用synchronized+wait/notify/notifyall就显得太重了，这只应该考虑：CountDownLatch/CyclicBarrier/Semaphore
+13、当多线程不涉及同步，只是涉及线程通信的时候，用synchronized+wait/notify/notifyall就显得太重了，这时应该考虑：CountDownLatch/CyclicBarrier/Semaphore
 14、wait、notify/notifyall:都是锁对象调用的方法，因此必定是线程先锁定了该对象，才能执行该对象的这些方法调用；
-15、wait会释放对象锁，进入等待状态；其他方法不会释放锁；java中线程没有唤醒执行线程的方法，notify都是唤醒需要获取该锁对象的一个线程(在锁对象等待的线程中挑一个)，参与竞争锁，
+15、wait会释放对象锁，进入等待状态（blocked）；其他方法不会释放锁；java中线程没有唤醒执行线程的方法，notify都是唤醒需要获取该锁对象的一个线程(在锁对象等待的线程中挑一个)，参与竞争锁，
 cpu线程调度器来决定哪个线程执行；notifyall是唤醒所有在该锁对象上等待状态的线程
 16、CountDownLatch(门闩)：同步计数器，当计数器数值减为0时，所有受其影响而等待的线程将会被激活；代替wait/notify/notifyall来进行线程间的通信，还可以指定等待时间使用await、countdown方法代替wait/notify
 17、join：thread对象的join()方法只会使主线程(或者说调用t.join()的线程)进入等待池，并等待t线程执行完毕后才会被唤醒，并不影响同一时刻处在运行状态的其他线程
 20、CountDownLatch的用法
 CountDownLatch典型用法：1、某一线程在开始运行前等待n个线程执行完毕。将CountDownLatch的计数器初始化为new CountDownLatch(n)，每当一个任务线程执行完毕，就将计数器减1 countdownLatch.countDown()，当计数器的值变为0时，在CountDownLatch上await()的线程就会被唤醒。一个典型应用场景就是启动一个服务时，主线程需要等待多个组件加载完毕，之后再继续执行。
 CountDownLatch典型用法：2、实现多个线程开始执行任务的最大并行性。注意是并行性，不是并发，强调的是多个线程在某一时刻同时开始执行。类似于赛跑，将多个线程放到起点，等待发令枪响，然后同时开跑。做法是初始化一个共享的CountDownLatch(1)，将其计算器初始化为1，多个线程在开始执行任务前首先countdownlatch.await()，当主线程调用countDown()时，计数器变为0，多个线程同时被唤醒。
+
 21、CyclicBarrier(循环栅栏)：可以实现一组线程相互等待，当所有线程都到达某个屏障点后再进行后续的操作；内部都有一个计数器，当计数器的值不断的减为0的时候所有阻塞的线程将会被唤醒
 22、CyclicBarrier的计数器由自己控制，而CountDownLatch的计数器则由使用者来控制；CountDownLatch只能拦截一轮，而CyclicBarrier可以实现循环拦截；可以用于多线程计算数据，最后合并计算结果的场景。
+CountDownLatch 基于 AQS 的共享模式的使用，而 CyclicBarrier 基于 Condition 来实现的;在CyclicBarrier中线程调用await方法不仅会将自己阻塞还会将计数器减1，而在CountDownLatch中线程调用await方法只是将自己阻塞而不会减少计数器的值
+CountDownLatch会阻塞主线程，CyclicBarrier不会阻塞主线程，只会阻塞子线程。
+CyclicBarrier运用场景：
+CyclicBarrier可以用于多线程计算数据，最后合并计算结果的应用场景。比如现在需要计算10个人12个月内的工资详细，可以将线程分为10个，分别计算每个人的工资，最后，再用barrierAction将这些线程的计算结果进行整合，得出最后结果。
 23、Semaphore：是synchronized 的加强版，作用是控制线程的并发数量。就这一点而言，单纯的synchronized 关键字是实现不了的。
+
 24、Reentrantlock(可重入锁)：用于替代synchronized，lock=new RenentrantLock（）；锁定：lock.lock();解锁：lock.unlock();异常后不会自动释放锁，需要手动释放锁！！！！！
 lock.trylock() 尝试去拿锁，拿到true，否则false
 lock.lockInterruptibly()可以对线程进行打断，不让其一直等待
+
 25、RenentrantLock(true)：可以指定为公平锁，让其他要获取该锁的线程有平等的获取锁的机会，谁等的最久优先得到锁
 26、synchronized：非公平锁，并不是谁等的越久越先得到锁，cpu自己挑选一个需要该锁的线程来执行
 27、java线程通信的几个方式：synchronizer、同步容器、threadPool/executor
@@ -34,7 +42,9 @@ lock.lockInterruptibly()可以对线程进行打断，不让其一直等待
 29、绝大多数情况while和wait一起用，基本都是用notifyall，而不是notify（可能造成死锁）
 30、可重入锁：可重入锁是指同一个线程可以多次获取同一把锁。ReentrantLock和synchronized都是可重入锁。
 31、可中断锁：可中断锁是指线程尝试获取锁的过程中，是否可以响应中断。synchronized是不可中断锁，而ReentrantLock则提供了中断功能。
+
 32、Reentrantlock：通过CAS+AQS来实现！！！弄清加锁、释放锁的原理
+
 33、ReentrantLock的基本实现可以概括为：先通过CAS尝试获取锁。如果此时已经有线程占据了锁，那就加入AQS队列并且被挂起。当锁被释放之后，排在CLH队列队首的线程会被唤醒，然后CAS再次尝试获取锁。
 加锁：首先用一个CAS操作，判断state是否是0（表示当前锁未被占用），如果是0则把它置为1，并且设置当前线程为该锁的独占线程，表示获取锁成功。当多个线程同时尝试占用同一个锁时，
     CAS操作只能保证一个线程操作成功，剩下的只能乖乖的去排队啦。

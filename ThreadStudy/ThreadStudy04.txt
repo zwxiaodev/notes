@@ -5,8 +5,9 @@
 执行时间长，线程数多，用系统锁
 3、synchronized:能保证原子性，但是无法保证指令重排序，volatile：保证可见性和禁止重排序（内存屏蔽）
 4.cas：cpu原语支持的，不能被打断的；java很多底层都是用的cas实现
+
 5、CountdownLatch，CyclicBarrier：都是能让程序执行到某一点后再一起继续执行的功能，join也能做到这个功能
-  CountdownLatch：倒数计数的门栓，只能使用一次，await()：这里会阻塞等待，知道count变为0则继续执行
+  CountdownLatch：倒数计数的门栓(同步计数器)，只能使用一次，await()：这里会阻塞等待，直到count变为0则继续执行
   CyclicBarrier:循环栅栏，await()就好比是屏障，经过指定数量的屏障才可以执行最后的线程。或者说是一直等待，直到await()的数量是指定的数量后才会执行下面的；
   await()方法在等待所有的线程都通过了屏障，就会执行CyclicBarrier内部的线程，执行完内部线程后，子线程会继续执行。
   可以看到是分两步的： 
@@ -26,7 +27,7 @@
   Lock readLock = lock.readLock();  //共享锁
   Lock writeLock = lock.wirteLock();  //排它锁
 8、Semaphore：信号量，拿到信号才能执行，acquire（）；释放信号，release（）；new Semaphore(2); //限流（车道收费站），控制职能有几个线程能执行
-9、Exchanger<String> exchange = new Exchanger<>(); //交换器，交换数据，可以将一个线程的数据交换给另一个线程（自能是两个线程交换）
+9、Exchanger<String> exchange = new Exchanger<>(); //交换器，交换数据，可以将一个线程的数据交换给另一个线程（只能是两个线程交换）
   exchange(值)//阻塞等待都交换了才继续执行（游戏中两个人交换装备，金币）
 Exchanger类源于java.util.concurrent包，它可以在两个线程之间传输数据，Exchanger中的public V exchange(V x)方法被调用后等待另一个线程到达交换点（如果当前线程没有被中断），
 然后将已知的对象传给它，返回接收的对象。

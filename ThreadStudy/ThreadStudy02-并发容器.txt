@@ -1,5 +1,6 @@
 1、ThreadLocal:线程局部变量，可以使多线程copy的主存对象修改后不让其他线程看到，成为局部变量，相当于拷贝了一份在自己的线程里，互不影响。volatile是让变量可见；
 2、ThreadLocal：是使用空间换时间，synchronized：是使用时间换空间。
+
   ThreadLocal<T>其实是与线程绑定的一个变量。ThreadLocal和Synchonized都用于解决多线程并发访问。但是ThreadLocal与synchronized有本质的区别。
   Synchronized用于线程间的数据共享，而ThreadLocal则用于线程间的数据隔离。Synchronized是利用锁的机制，使变量或代码块在某一时该只能被一个线程访问。
   而ThreadLocal为每一个线程都提供了变量的副本，使得每个线程在某一时间访问到的并不是同一个对象，这样就隔离了多个线程对数据的数据共享。而Synchronized却正好相反，
@@ -20,7 +21,7 @@
   
   //加锁的容器
   Collections.synhronizdXXX
-  Map<String,String> map = new HashTable<>(); //方法都是同步的，多线程中使用，锁的是整个对象，效率低（基本不用了）；并发不高可以shiy0ong
+  Map<String,String> map = new HashTable<>(); //方法都是同步的，多线程中使用，锁的是整个对象，效率低（基本不用了）；并发不高可以使用
   Map<String,String> map = new ConcurrentHashMap<String,String>();  //同步，锁的是一部分数据，效率高
   Map<String,String> map = new ConcurrentSkipListMap<>(); //也排序，效率高
   

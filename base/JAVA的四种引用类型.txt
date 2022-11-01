@@ -21,7 +21,7 @@ SoftReference ref=new SoftReference(new MyObject(), queue);
 我们可以调用ReferenceQueue的poll()方法来检查是否有它所关心的非强引用对象被回收。利用这个方法，我们可以检查哪个SoftReference所软引用的对象已经被回收。于是我们可以把这些失去软引用的对象的清除掉。
 
 3.理解WeakHashMap
-WeakHashMap是以弱引用为键实现的HsahMap。更精确地说，对于一个给定的key对象，其对应的value对象的存在并不能阻止该key对象被GC。GC某个key对象时，它所在的条目会一并被从Map中删除。这是WeakHashMap与其他HashMap最大的不同。
+WeakHashMap是以弱引用为键实现的HashMap。更精确地说，对于一个给定的key对象，其对应的value对象的存在并不能阻止该key对象被GC。GC某个key对象时，它所在的条目会一并被从Map中删除。这是WeakHashMap与其他HashMap最大的不同。
 
 总结：
 软引用和弱引用都能够实现缓存和避免内存泄露和溢出的问题，不同的是前者的生命周期比较长，后者的生命周期比较短，前者是在内存使用情况到了一定的阀值才会被GC回收，而后者只要被GC线程检测到就会被回收，各有优劣，如果比较注重性能的话可以选择后者，具体情况具体分析！

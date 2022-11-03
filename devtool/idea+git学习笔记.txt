@@ -12,7 +12,7 @@ reset type 选Hard，to commit写刚才复制的number-reset即可回退到指�
 6、创建本地分支：git-repository-branches……-new branch
 切换分支：git-repository-branches……找到要切换的分支-checkout
 分支合并到master：git-repository-merge changes……选择要合并到master的分支-merge
-7、解决冲突：it-repository-merge changes……选择要合并到master的分支-merge-显示conflicts-merge……，合并到文件，自己解决冲突后再commit
+7、解决冲突：git-repository-merge changes……选择要合并到master的分支-merge-显示conflicts-merge……，合并到文件，自己解决冲突后再commit
 8、上传本地工程代码到gitlab：
 gitlab上新建一个仓库，复制***.git的地址，到ieda：工程右键-git-repository-push……-degine remote填入复制的地址
 9、更新远程代码：

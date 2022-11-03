@@ -1,0 +1,164 @@
+Collections.emptyList();
+
+Collections.singletonList(new EntityWrapper(businessAccount, bizAccount.getSortId(), EntityType.BusinessAccount));
+Set<Long> accessAccountList = relationshipList.stream().filter(rs -> ORGENT_TYPE.Account.name().equals(rs.getObjective5Id())).map(V3xOrgRelationship::getObjective0Id).filter(Objects::nonNull).collect(Collectors.toSet());
+
+return bizDept.stream().map(businessDept -> {
+                    BusinessDepartment department = selectOrgConverters.convertBusinessDeptVO(businessDept, bizAccount, account);
+                    return new EntityWrapper(department, businessDept.getSortId(), EntityType.BusinessDepartment);
+                }).collect(Collectors.toList());
+		
+boolean noneMatch = Arrays.stream(cacheNames.split(","))
+		.noneMatch(cacheName -> defaultGroupCacheableReloader.getNamingMap().containsKey(cacheName));
+		
+		return userDao.findAll()
+				.stream()
+				.filter(Objects::nonNull)
+				.filter(u-> !u.isDeleted())
+				.distinct()
+				.collect(Collectors.toMap(User::getId, v -> v));
+				
+return ids.stream()
+				.map(orgRelationshipCache::get)
+				.filter(Objects::nonNull)
+				.map(V3xOrgRelationship::new)
+				.collect(Collectors.toList());
+relationships = relationships.stream().distinct().collect(Collectors.toList());
+List<Long> ids = oldCacheObjList.stream().map(relation -> ((V3xOrgRelationship)relation).getId()).collect(Collectors.toList());
+
+cacheMap.forEach((k,v)->{	//v=SingleRSCache
+		List<OrgRelationship> rsList = v.findAll().stream().filter(relation -> ids.contains(relation.getId())).collect(Collectors.toList());
+		relationshipList.addAll(rsList);
+	});
+	
+ Stream<V3xOrgMember> stream = entities.stream()
+	 .flatMap(entity -> {
+		try {
+			return this.orgManager.getMembersByType(entity.getEntityType(), entity.getId()).stream();
+		} catch (BusinessException e) {
+			log.error(e.getMessage(), e);
+			return null;
+		}
+	})
+	.filter(Objects::nonNull)
+	.filter(V3xOrgMember::isValid);
+	
+	rsStream.findAny().isPresent()
+	
+	isPresent();
+
+为了判断查询的类对象是否存在，采用此方法
+
+ 
+
+Optional<Course> optional = courseDao.findById(courseId);
+if(optional.isPresent()){
+　　//.isPresent()一般与.get()方法合用，当optional中存在course时，optional.isPresent()值为true，通过get（）方法返回对象。
+　　optional.get();
+　　...
+}
+
+.filter(Objects::nonNull).count()
+
+memberConPost.getOrDefault(m.getId(),Collections.emptyList())
+									.stream()
+									.filter(p -> accIdSet.contains(p.getOrgAccountId()))
+									.findAny()
+									.map(p -> {
+										m.setSortId(p.getSortId());
+										return m;
+									 })
+									.orElse(null);
+
+Map<Long, List<V3xOrgRelationship>> memberConPost =
+							orgMemberPostManager.findRSByConPost()
+							                    .stream()
+							                    .filter(p -> accIdSet.contains(p.getOrgAccountId()))
+							                    .collect(Collectors.groupingBy(V3xOrgRelationship::getSourceId, Collectors.toList()));
+
+List<OrgTypeIdBO> list = team.getAllMembers();
+		return list.parallelStream()
+			.map(memberId ->{
+				String type = memberId.getType();
+				if(ORGENT_TYPE.Department_Post.name().equals(type)) {
+					try {
+						return this.getMemberPostByDepartmentPost(memberId.getDepartmentId(), memberId.getPostId());
+					}catch(Exception e){
+						logger.error("",e);
+					}
+					return Collections.emptyList();
+				}
+				
+				return Collections.emptyList();
+			})
+			.flatMap( postList -> (Stream<MemberPost>) postList.stream())
+			.sorted(CompareSortMemberPost.getInstance())
+			.collect(Collectors.toList());
+			
+ List/Set
+            .stream();
+            
+        []
+            Stream.of();
+            
+        Map
+            .keySet().stream();
+            .entrySet().stream();
+            .values().stream();
+            
+    调用Stream的api执行操作：
+        延迟方法：该类方法调用后，会返回一个【新的Stream对象】，并且不会执行任何的业务操作
+            filter -- 实现数据过滤
+            map -- 将一种数据类型的流转成另一种数据类型的流
+            skip -- 跳过前几个
+            limit -- 取前几个
+            Stream.concat() -- 合并流对象
+      
+        终结方法：该类方法调用后，不会返回Stream流对象，会触发之前所有的业务操作
+            forEach  --- 实现遍历
+            count -- 实现计数
+            collect -- 将流中的数据重新转为集合
+
+//    private void trace() {
+//        StackTraceElement[] st = Thread.currentThread().getStackTrace();
+//        if (st != null) {
+//            StringBuffer sbf = new StringBuffer();
+//            StackTraceElement[] var3 = st;
+//            int var4 = st.length;
+//
+//            for(int var5 = 0; var5 < var4; ++var5) {
+//                StackTraceElement e = var3[var5];
+//                if (sbf.length() > 0) {
+//                    sbf.append(" <- ");
+//                    sbf.append(System.getProperty("line.separator"));
+//                }
+//
+//                sbf.append(MessageFormat.format("{0}.{1}() {2}", e.getClassName(), e.getMethodName(), e.getLineNumber()));
+//            }
+//
+//            log.info("堆栈： \n" + sbf.toString());
+//        }
+//    }
+
+-------------------------------------------::--------------------------------------------
+OptionalLong min = costList.stream().mapToLong(Long::longValue).min();
+        List<Attachment> existAttachments = attachmentManager.getAttachmentByFileURLs(attachmentInfoBeans.stream().map(AttachmentInfoBean::getFileUrl).collect(Collectors.toList()));
+Optional.ofNullable(currentAffair).ifPresent(workflowBO::setCurrentAffair);
+Integer minPath = allDepartments.stream().map(d -> d.getPath().length()).min(Integer::compareTo).orElse(0);
+		dataMap.put("allRelationRecords", this.getAllRelationRecords().stream().map(CAPFormRelationRecord::exportAllToMap).collect(Collectors.toList()));
+Optional<Integer> maxNum = allOperations.stream()
+				 .filter(item->!item.isDelete())
+				 .map(FormAuthViewBean::getName)
+				 .filter(item -> item.startsWith(formAuthViewBean.getName()))
+				 .map(item -> item.replace(formAuthViewBean.getName(), ""))
+				 .map(item -> Strings.isBlank(item)? "0" : item)
+				 .filter(Strings::isDigits)
+				 .map(Integer::valueOf)
+				 .max(Comparator.comparingInt(Integer::intValue));
+
+
+
+
+jvm、juc、bean生命周期，扩展点哪些，ioc app原理
+
+MySQL 行锁原理、Mvcc 解决幻读的原理，在MySQL 中它彻底解决了幻读了么，为什么
